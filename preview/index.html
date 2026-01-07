@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EDG Jewelry - Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/base.css">
+  <style>
+    /* Preview-specific styles */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    
+    .preview-note {
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      color: #fff;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      z-index: 9999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-note">Static Preview - No Shopify Liquid Functionality</div>
+
+  <!-- Header -->
+  <header class="header" id="header" data-header>
+    <div class="header__inner">
+      <nav class="header__nav header__nav--left">
+        <ul class="header__menu">
+          <li class="header__menu-item"><a href="#" class="header__link">shop</a></li>
+          <li class="header__menu-item"><a href="#" class="header__link">collections</a></li>
+          <li class="header__menu-item"><a href="#" class="header__link">grillz</a></li>
+          <li class="header__menu-item"><a href="#" class="header__link">custom</a></li>
+          <li class="header__menu-item"><a href="#" class="header__link">world</a></li>
+        </ul>
+      </nav>
+      <a href="#" class="header__logo">BOBBY</a>
+      <nav class="header__nav header__nav--right">
+        <ul class="header__menu">
+          <li class="header__menu-item"><a href="#" class="header__link">appointments</a></li>
+          <li class="header__menu-item"><a href="#" class="header__link">about</a></li>
+          <li class="header__menu-item"><a href="#" class="header__link header__cart" data-cart-toggle>cart</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__media">
+      <div class="hero__placeholder">
+        <svg class="hero__placeholder-svg" viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="600" fill="#f5f5f5"/>
+          <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#999">Hero Image</text>
+        </svg>
+      </div>
+    </div>
+    <div class="hero__content">
+      <div class="hero__text">
+        <h1 class="hero__heading animate-fade-in" style="animation-delay: 100ms;">new collection</h1>
+        <p class="hero__subheading animate-fade-in" style="animation-delay: 200ms;">minimalist luxury jewelry</p>
+        <a href="#" class="hero__button animate-fade-in" style="animation-delay: 300ms;">shop now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Collection -->
+  <section class="featured-collection">
+    <div class="featured-collection__inner">
+      <header class="featured-collection__header">
+        <h2 class="featured-collection__heading">featured</h2>
+        <a href="#" class="featured-collection__view-all">view all</a>
+      </header>
+      <div class="product-grid product-grid--4">
+        <!-- Product 1 -->
+        <a href="#" class="product-card" data-reveal>
+          <div class="product-card__media">
+            <img src="https://via.placeholder.com/800x1067/ffffff/111111?text=Product+1" alt="Product 1" class="product-card__image product-card__image--primary">
+            <img src="https://via.placeholder.com/800x1067/f5f5f5/777777?text=On+Body+1" alt="Product 1 on body" class="product-card__image product-card__image--secondary">
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">gold chain necklace</h3>
+            <p class="product-card__price">$450.00</p>
+          </div>
+        </a>
+        <!-- Product 2 -->
+        <a href="#" class="product-card" data-reveal>
+          <div class="product-card__media">
+            <img src="https://via.placeholder.com/800x1067/ffffff/111111?text=Product+2" alt="Product 2" class="product-card__image product-card__image--primary">
+            <img src="https://via.placeholder.com/800x1067/f5f5f5/777777?text=On+Body+2" alt="Product 2 on body" class="product-card__image product-card__image--secondary">
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">silver ring set</h3>
+            <p class="product-card__price">$320.00</p>
+          </div>
+        </a>
+        <!-- Product 3 -->
+        <a href="#" class="product-card" data-reveal>
+          <div class="product-card__media">
+            <img src="https://via.placeholder.com/800x1067/ffffff/111111?text=Product+3" alt="Product 3" class="product-card__image product-card__image--primary">
+            <img src="https://via.placeholder.com/800x1067/f5f5f5/777777?text=On+Body+3" alt="Product 3 on body" class="product-card__image product-card__image--secondary">
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">diamond earrings</h3>
+            <p class="product-card__price">$890.00</p>
+          </div>
+        </a>
+        <!-- Product 4 -->
+        <a href="#" class="product-card" data-reveal>
+          <div class="product-card__media">
+            <img src="https://via.placeholder.com/800x1067/ffffff/111111?text=Product+4" alt="Product 4" class="product-card__image product-card__image--primary">
+            <img src="https://via.placeholder.com/800x1067/f5f5f5/777777?text=On+Body+4" alt="Product 4 on body" class="product-card__image product-card__image--secondary">
+          </div>
+          <div class="product-card__info">
+            <h3 class="product-card__title">platinum bracelet</h3>
+            <p class="product-card__price">$1,200.00</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <nav class="footer__nav">
+        <ul class="footer__links">
+          <li class="footer__link-item"><a href="#" class="footer__link">refund policy</a></li>
+          <li class="footer__link-item"><a href="#" class="footer__link">privacy policy</a></li>
+          <li class="footer__link-item"><a href="#" class="footer__link">terms of service</a></li>
+          <li class="footer__link-item"><a href="#" class="footer__link">shipping policy</a></li>
+          <li class="footer__link-item"><a href="#" class="footer__link">contact</a></li>
+          <li class="footer__link-item"><a href="#" class="footer__link">instagram</a></li>
+        </ul>
+      </nav>
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2024 bobby</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer" id="CartDrawer" data-cart-drawer hidden>
+    <div class="cart-drawer__overlay" data-cart-drawer-close></div>
+    <div class="cart-drawer__content">
+      <header class="cart-drawer__header">
+        <h2 class="cart-drawer__title">cart</h2>
+        <button type="button" class="cart-drawer__close" data-cart-drawer-close>
+          <span class="cart-drawer__close-line"></span>
+          <span class="cart-drawer__close-line"></span>
+        </button>
+      </header>
+      <div class="cart-drawer__body">
+        <p class="cart-drawer__empty">your cart is empty</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/theme.js"></script>
+</body>
+</html>
+

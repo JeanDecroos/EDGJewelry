@@ -1,0 +1,104 @@
+{%- comment -%}
+  Header Section
+  Minimalist sticky header with transparent background
+{%- endcomment -%}
+
+<header class="header" id="header" data-header>
+  <div class="header__inner">
+    <nav class="header__nav header__nav--left" aria-label="Primary navigation">
+      <ul class="header__menu">
+        <li class="header__menu-item">
+          <a href="/collections/all" class="header__link">shop</a>
+        </li>
+        <li class="header__menu-item">
+          <a href="/collections" class="header__link">collections</a>
+        </li>
+        <li class="header__menu-item">
+          <a href="/collections/grillz" class="header__link">grillz</a>
+        </li>
+        <li class="header__menu-item">
+          <a href="/pages/custom" class="header__link">custom</a>
+        </li>
+        <li class="header__menu-item">
+          <a href="/pages/world" class="header__link">world</a>
+        </li>
+      </ul>
+    </nav>
+
+    <a href="/" class="header__logo">
+      {{ section.settings.logo_text | default: 'BOBBY' }}
+    </a>
+
+    <nav class="header__nav header__nav--right" aria-label="Secondary navigation">
+      <ul class="header__menu">
+        <li class="header__menu-item">
+          <a href="/pages/appointments" class="header__link">appointments</a>
+        </li>
+        <li class="header__menu-item">
+          <a href="/pages/about" class="header__link">about</a>
+        </li>
+        {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+          <li class="header__menu-item header__localization">
+            {%- form 'localization', id: 'HeaderLocalizationForm', class: 'header__localization-form' -%}
+              {%- if localization.available_countries.size > 1 -%}
+                <div class="header__selector">
+                  <button type="button" class="header__link header__selector-button" aria-expanded="false" aria-controls="HeaderCountryList">
+                    {{ localization.country.currency.iso_code }}
+                  </button>
+                  <ul id="HeaderCountryList" class="header__dropdown" hidden>
+                    {%- for country in localization.available_countries -%}
+                      <li class="header__dropdown-item">
+                        <button type="submit" name="country_code" value="{{ country.iso_code }}" class="header__dropdown-link{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">
+                          {{ country.currency.iso_code }}
+                        </button>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+            {%- endform -%}
+          </li>
+        {%- endif -%}
+        <li class="header__menu-item">
+          <a href="{{ routes.cart_url }}" class="header__link header__cart" aria-label="Cart" data-cart-toggle>
+            cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <button class="header__mobile-toggle" aria-label="Open menu" aria-expanded="false" data-mobile-menu-toggle>
+      <span class="header__mobile-toggle-line"></span>
+      <span class="header__mobile-toggle-line"></span>
+    </button>
+  </div>
+
+  <nav class="header__mobile-menu" id="MobileMenu" aria-label="Mobile navigation" hidden>
+    <ul class="header__mobile-list">
+      <li><a href="/collections/all" class="header__mobile-link">shop</a></li>
+      <li><a href="/collections" class="header__mobile-link">collections</a></li>
+      <li><a href="/collections/grillz" class="header__mobile-link">grillz</a></li>
+      <li><a href="/pages/custom" class="header__mobile-link">custom</a></li>
+      <li><a href="/pages/world" class="header__mobile-link">world</a></li>
+      <li><a href="/pages/appointments" class="header__mobile-link">appointments</a></li>
+      <li><a href="/pages/about" class="header__mobile-link">about</a></li>
+      <li><a href="{{ routes.cart_url }}" class="header__mobile-link">cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}</a></li>
+    </ul>
+  </nav>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "BOBBY"
+    }
+  ]
+}
+{% endschema %}
+

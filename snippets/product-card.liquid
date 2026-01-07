@@ -1,0 +1,53 @@
+{%- comment -%}
+  Product Card Snippet
+  Single anchor element with primary/secondary image hover swap
+  
+  Required variables:
+  - product: Product object
+{%- endcomment -%}
+
+{%- liquid
+  assign primary_image = product.featured_image
+  assign secondary_image = product.images[1]
+-%}
+
+<a href="{{ product.url }}" class="product-card" data-reveal>
+  <div class="product-card__media">
+    {%- if primary_image != blank -%}
+      <img
+        src="{{ primary_image | image_url: width: 800 }}"
+        alt="{{ primary_image.alt | escape | default: product.title }}"
+        class="product-card__image product-card__image--primary"
+        loading="lazy"
+        width="{{ primary_image.width }}"
+        height="{{ primary_image.height }}"
+      >
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+    {%- endif -%}
+
+    {%- if secondary_image != blank -%}
+      <img
+        src="{{ secondary_image | image_url: width: 800 }}"
+        alt="{{ secondary_image.alt | escape | default: product.title }}"
+        class="product-card__image product-card__image--secondary"
+        loading="lazy"
+        width="{{ secondary_image.width }}"
+        height="{{ secondary_image.height }}"
+      >
+    {%- endif -%}
+  </div>
+
+  <div class="product-card__info">
+    <h3 class="product-card__title">{{ product.title | downcase }}</h3>
+    <p class="product-card__price">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="product-card__price--sale">{{ product.price | money }}</span>
+        <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </p>
+  </div>
+</a>
+

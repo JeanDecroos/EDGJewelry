@@ -1,0 +1,74 @@
+{%- comment -%}
+  Cart Drawer Snippet
+  Off-canvas drawer that slides in from the right
+{%- endcomment -%}
+
+<div class="cart-drawer" id="CartDrawer" data-cart-drawer hidden>
+  <div class="cart-drawer__overlay" data-cart-drawer-close></div>
+  
+  <div class="cart-drawer__content">
+    <header class="cart-drawer__header">
+      <h2 class="cart-drawer__title">cart</h2>
+      <button type="button" class="cart-drawer__close" data-cart-drawer-close aria-label="Close cart">
+        <span class="cart-drawer__close-line"></span>
+        <span class="cart-drawer__close-line"></span>
+      </button>
+    </header>
+
+    <div class="cart-drawer__body">
+      {%- if cart.item_count > 0 -%}
+        <ul class="cart-drawer__items">
+          {%- for item in cart.items -%}
+            <li class="cart-drawer__item">
+              <a href="{{ item.url }}" class="cart-drawer__item-image">
+                {%- if item.image -%}
+                  <img
+                    src="{{ item.image | image_url: width: 200 }}"
+                    alt="{{ item.image.alt | escape | default: item.title }}"
+                    loading="lazy"
+                    width="80"
+                    height="80"
+                  >
+                {%- endif -%}
+              </a>
+              <div class="cart-drawer__item-info">
+                <a href="{{ item.url }}" class="cart-drawer__item-title">{{ item.product.title | downcase }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="cart-drawer__item-variant">{{ item.variant.title | downcase }}</p>
+                {%- endunless -%}
+                <p class="cart-drawer__item-price">{{ item.final_line_price | money }}</p>
+              </div>
+              <div class="cart-drawer__item-quantity">
+                <form action="{{ routes.cart_change_url }}" method="post">
+                  <input type="hidden" name="id" value="{{ item.key }}">
+                  <button type="submit" name="quantity" value="{{ item.quantity | minus: 1 }}" class="cart-drawer__quantity-btn" aria-label="Decrease quantity">−</button>
+                  <span class="cart-drawer__quantity-value">{{ item.quantity }}</span>
+                  <button type="submit" name="quantity" value="{{ item.quantity | plus: 1 }}" class="cart-drawer__quantity-btn" aria-label="Increase quantity">+</button>
+                </form>
+              </div>
+              <a href="{{ routes.cart_change_url }}?id={{ item.key }}&quantity=0" class="cart-drawer__item-remove" aria-label="Remove {{ item.title }}">
+                remove
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="cart-drawer__empty">your cart is empty</p>
+      {%- endif -%}
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <footer class="cart-drawer__footer">
+        <div class="cart-drawer__subtotal">
+          <span>subtotal</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        <p class="cart-drawer__note">shipping calculated at checkout</p>
+        <a href="{{ routes.cart_url }}" class="cart-drawer__checkout-btn">
+          checkout
+        </a>
+      </footer>
+    {%- endif -%}
+  </div>
+</div>
+

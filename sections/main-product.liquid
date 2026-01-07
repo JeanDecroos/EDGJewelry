@@ -1,0 +1,155 @@
+{%- comment -%}
+  Main Product Section
+  Product images, title, price, variants, add to cart
+{%- endcomment -%}
+
+<section class="main-product" data-section-type="main-product">
+  <div class="main-product__inner">
+    <div class="main-product__media">
+      <div class="main-product__gallery">
+        {%- for media in product.media -%}
+          <div class="main-product__media-item{% if forloop.first %} is-active{% endif %}" data-media-id="{{ media.id }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                <img
+                  src="{{ media | image_url: width: 1200 }}"
+                  alt="{{ media.alt | escape | default: product.title }}"
+                  class="main-product__image"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  width="{{ media.width }}"
+                  height="{{ media.height }}"
+                >
+              {%- when 'video' -%}
+                {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false }}
+              {%- when 'external_video' -%}
+                {{ media | external_video_tag }}
+            {%- endcase -%}
+          </div>
+        {%- else -%}
+          <div class="main-product__media-item">
+            {{ 'product-1' | placeholder_svg_tag: 'main-product__placeholder-svg' }}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if product.media.size > 1 -%}
+        <div class="main-product__thumbnails">
+          {%- for media in product.media -%}
+            <button 
+              type="button" 
+              class="main-product__thumbnail{% if forloop.first %} is-active{% endif %}"
+              data-thumbnail
+              data-media-id="{{ media.id }}"
+              aria-label="View {{ product.title }} - Image {{ forloop.index }}"
+            >
+              <img
+                src="{{ media | image_url: width: 100 }}"
+                alt="{{ media.alt | escape | default: product.title }}"
+                loading="lazy"
+                width="50"
+                height="50"
+              >
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="main-product__info">
+      <header class="main-product__header">
+        <h1 class="main-product__title">{{ product.title | downcase }}</h1>
+        <p class="main-product__price">
+          {%- if product.compare_at_price > product.price -%}
+            <span class="main-product__price--sale">{{ product.price | money }}</span>
+            <span class="main-product__price--compare">{{ product.compare_at_price | money }}</span>
+          {%- else -%}
+            {{ product.price | money }}
+          {%- endif -%}
+        </p>
+      </header>
+
+      {%- form 'product', product, id: 'ProductForm', class: 'main-product__form' -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        {%- unless product.has_only_default_variant -%}
+          <div class="main-product__variants">
+            {%- for option in product.options_with_values -%}
+              <div class="main-product__option">
+                <label class="main-product__option-label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                  {{ option.name | downcase }}
+                </label>
+                <select 
+                  id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                  class="main-product__option-select"
+                  name="options[{{ option.name }}]"
+                  data-option-select
+                >
+                  {%- for value in option.values -%}
+                    <option 
+                      value="{{ value }}"
+                      {% if option.selected_value == value %}selected{% endif %}
+                    >
+                      {{ value }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+
+        <div class="main-product__quantity">
+          <label class="main-product__quantity-label" for="Quantity-{{ section.id }}">
+            quantity
+          </label>
+          <input
+            type="number"
+            id="Quantity-{{ section.id }}"
+            class="main-product__quantity-input"
+            name="quantity"
+            value="1"
+            min="1"
+          >
+        </div>
+
+        <button 
+          type="submit" 
+          class="main-product__submit"
+          {% unless product.available %}disabled{% endunless %}
+        >
+          {%- if product.available -%}
+            add to cart
+          {%- else -%}
+            sold out
+          {%- endif -%}
+        </button>
+      {%- endform -%}
+
+      {%- if product.description != blank -%}
+        <div class="main-product__description">
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="ProductJSON-{{ section.id }}">
+  {{ product.variants | json }}
+</script>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "class": "section-main-product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_video_autoplay",
+      "label": "Enable video autoplay",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+

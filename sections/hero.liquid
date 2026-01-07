@@ -1,0 +1,87 @@
+{%- comment -%}
+  Hero Section
+  Full-width image with text overlay, fade in on page load
+{%- endcomment -%}
+
+<section class="hero" data-section-type="hero">
+  <div class="hero__media">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 2000 }}"
+        alt="{{ section.settings.image.alt | escape }}"
+        class="hero__image"
+        loading="eager"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+      >
+    {%- else -%}
+      <div class="hero__placeholder">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'hero__placeholder-svg' }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+    <div class="hero__content">
+      <div class="hero__text">
+        {%- if section.settings.heading != blank -%}
+          <h1 class="hero__heading animate-fade-in" style="animation-delay: 100ms;">
+            {{ section.settings.heading | downcase }}
+          </h1>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="hero__subheading animate-fade-in" style="animation-delay: 200ms;">
+            {{ section.settings.subheading | downcase }}
+          </p>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+          <a href="{{ section.settings.button_link }}" class="hero__button animate-fade-in" style="animation-delay: 300ms;">
+            {{ section.settings.button_label | downcase }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "new collection"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
+

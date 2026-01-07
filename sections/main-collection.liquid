@@ -1,0 +1,138 @@
+{%- comment -%}
+  Main Collection Section
+  Category filters and product grid
+{%- endcomment -%}
+
+<section class="main-collection" data-section-type="main-collection">
+  <div class="main-collection__inner">
+    <header class="main-collection__header">
+      <h1 class="main-collection__title">{{ collection.title | downcase }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="main-collection__description">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+    </header>
+
+    <nav class="collection-filters" aria-label="Product filters">
+      <ul class="collection-filters__list">
+        <li class="collection-filters__item">
+          <a 
+            href="{{ routes.all_products_collection_url }}" 
+            class="collection-filters__link{% if collection.handle == 'all' %} is-active{% endif %}"
+          >
+            all
+          </a>
+        </li>
+        {%- for filter in section.settings.filters -%}
+          {%- assign filter_handle = filter.collection | handle -%}
+          {%- assign filter_collection = collections[filter_handle] -%}
+          {%- if filter_collection != blank -%}
+            <li class="collection-filters__item">
+              <a 
+                href="{{ filter_collection.url }}" 
+                class="collection-filters__link{% if collection.handle == filter_handle %} is-active{% endif %}"
+              >
+                {{ filter.label | default: filter_collection.title | downcase }}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="product-grid product-grid--{{ section.settings.columns_desktop }}">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          <p class="main-collection__empty">{{ 'collections.general.no_matches' | t }}</p>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Pagination">
+          <ul class="pagination__list">
+            {%- if paginate.previous -%}
+              <li class="pagination__item">
+                <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+                  prev
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              <li class="pagination__item">
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="pagination__link">{{ part.title }}</a>
+                {%- else -%}
+                  {%- if part.title == paginate.current_page -%}
+                    <span class="pagination__link is-active" aria-current="page">{{ part.title }}</span>
+                  {%- else -%}
+                    <span class="pagination__link">{{ part.title }}</span>
+                  {%- endif -%}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <li class="pagination__item">
+                <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Next page">
+                  next
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Collection",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "label": "Products per page"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "Category filter",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Custom label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
