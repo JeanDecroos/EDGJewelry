@@ -4,27 +4,77 @@
  * Script to create sample jewelry products in Shopify using the Admin API
  * 
  * Usage:
- * 1. Get your Admin API access token from Shopify Admin > Settings > Apps and sales channels > Develop apps
- * 2. Run: node create-products.js YOUR_ACCESS_TOKEN
+ * Option 1 (Environment Variables - Recommended):
+ *   1. Create a .env file with your credentials (see .env.example)
+ *   2. Install dotenv: npm install dotenv
+ *   3. Run: node create-products.js
+ * 
+ * Option 2 (Command Line):
+ *   Run: node create-products.js YOUR_ACCESS_TOKEN
+ * 
+ * Option 3 (Manual):
+ *   Set environment variables:
+ *   export SHOPIFY_STORE_URL=your-store.myshopify.com
+ *   export SHOPIFY_ACCESS_TOKEN=your_access_token
+ *   node create-products.js
  */
 
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
-const STORE_URL = 'byestelledegeyter.myshopify.com';
-const ACCESS_TOKEN = process.argv[2];
+// Try to load environment variables from .env file
+let envLoaded = false;
+try {
+  const envPath = path.join(__dirname, '.env');
+  if (fs.existsSync(envPath)) {
+    const envFile = fs.readFileSync(envPath, 'utf8');
+    envFile.split('\n').forEach(line => {
+      const trimmedLine = line.trim();
+      if (trimmedLine && !trimmedLine.startsWith('#')) {
+        const [key, ...valueParts] = trimmedLine.split('=');
+        if (key && valueParts.length > 0) {
+          const value = valueParts.join('=').trim();
+          if (value) {
+            process.env[key.trim()] = value;
+            envLoaded = true;
+          }
+        }
+      }
+    });
+  }
+} catch (error) {
+  // Silently fail if .env can't be loaded
+}
+
+const STORE_URL = process.env.SHOPIFY_STORE_URL || 'byestelledegeyter.myshopify.com';
+const ACCESS_TOKEN = process.argv[2] || process.env.SHOPIFY_ACCESS_TOKEN;
+const CLIENT_ID = process.env.SHOPIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET;
 
 if (!ACCESS_TOKEN) {
   console.error('❌ Error: Please provide your Admin API access token');
-  console.log('\nUsage: node create-products.js YOUR_ACCESS_TOKEN');
+  console.log('\nUsage Options:');
+  console.log('1. Command line: node create-products.js YOUR_ACCESS_TOKEN');
+  console.log('2. Environment variable: export SHOPIFY_ACCESS_TOKEN=your_token && node create-products.js');
+  console.log('3. .env file: Create .env with SHOPIFY_ACCESS_TOKEN=your_token and run: node create-products.js');
   console.log('\nTo get your access token:');
   console.log('1. Go to https://byestelledegeyter.myshopify.com/admin/settings/apps');
-  console.log('2. Click "Develop apps" > "Create an app"');
-  console.log('3. Name it "Product Creator"');
-  console.log('4. Go to "Configuration" > "Admin API access scopes"');
-  console.log('5. Enable: write_products, read_products');
-  console.log('6. Click "Save" > "Install app"');
-  console.log('7. Copy the "Admin API access token"');
+  console.log('2. Click "Develop apps" > Select your app or "Create an app"');
+  console.log('3. Go to "Configuration" > "Admin API access scopes"');
+  console.log('4. Enable: write_products, read_products');
+  console.log('5. Click "Save" > "Install app"');
+  console.log('6. Copy the "Admin API access token"');
+  if (CLIENT_ID || CLIENT_SECRET) {
+    console.log('\n💡 Note: You have CLIENT_ID and CLIENT_SECRET configured in .env');
+    console.log('   However, this script requires an Admin API access token.');
+    console.log('   Use the client credentials for OAuth flows in other applications.');
+  }
   process.exit(1);
+}
+
+if (envLoaded) {
+  console.log('✓ Loaded credentials from .env file\n');
 }
 
 const products = [

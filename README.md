@@ -93,3 +93,20 @@ EDGJewelry/
 - Mobile-responsive with breakpoints at 1024px and 600px
 - Cart drawer slides in from right with overlay
 
+## 🛍️ Product Management
+
+### Adding Sample Products
+
+This project includes a script to create sample jewelry products in your Shopify store:
+
+```bash
+node create-products.js
+```
+
+**Before running:**
+1. See `SETUP.md` for detailed instructions on getting your Admin API access token
+2. Create a `.env` file with your Shopify credentials (see `env.example`)
+3. Install the app in Shopify Admin with `write_products` and `read_products` scopes
+
+The script will create 20 sample jewelry products including rings, necklaces, earrings, and bracelets.
+

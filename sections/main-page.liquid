@@ -1,0 +1,25 @@
+{%- comment -%}
+  Main Page Section
+  Default page template for standard pages
+{%- endcomment -%}
+
+<section class="main-page" data-section-type="main-page">
+  <div class="main-page__inner">
+    <header class="main-page__header">
+      <h1 class="main-page__title">{{ page.title | downcase }}</h1>
+    </header>
+
+    <div class="main-page__content">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Page",
+  "class": "section-main-page",
+  "settings": []
+}
+{% endschema %}
+

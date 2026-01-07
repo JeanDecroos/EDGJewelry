@@ -8,32 +8,23 @@
     <nav class="header__nav header__nav--left" aria-label="Primary navigation">
       <ul class="header__menu">
         <li class="header__menu-item">
-          <a href="/collections/all" class="header__link">shop</a>
+          <a href="{{ routes.all_products_collection_url }}" class="header__link">shop</a>
         </li>
         <li class="header__menu-item">
-          <a href="/collections" class="header__link">collections</a>
-        </li>
-        <li class="header__menu-item">
-          <a href="/collections/grillz" class="header__link">grillz</a>
+          <a href="{{ routes.collections_url }}" class="header__link">collections</a>
         </li>
         <li class="header__menu-item">
           <a href="/pages/custom" class="header__link">custom</a>
         </li>
-        <li class="header__menu-item">
-          <a href="/pages/world" class="header__link">world</a>
-        </li>
       </ul>
     </nav>
 
-    <a href="/" class="header__logo">
-      {{ section.settings.logo_text | default: 'BOBBY' }}
+    <a href="{{ routes.root_url }}" class="header__logo">
+      {{ section.settings.logo_text | default: 'byestelledegeyter' }}
     </a>
 
     <nav class="header__nav header__nav--right" aria-label="Secondary navigation">
       <ul class="header__menu">
-        <li class="header__menu-item">
-          <a href="/pages/appointments" class="header__link">appointments</a>
-        </li>
         <li class="header__menu-item">
           <a href="/pages/about" class="header__link">about</a>
         </li>
@@ -75,12 +66,9 @@
 
   <nav class="header__mobile-menu" id="MobileMenu" aria-label="Mobile navigation" hidden>
     <ul class="header__mobile-list">
-      <li><a href="/collections/all" class="header__mobile-link">shop</a></li>
-      <li><a href="/collections" class="header__mobile-link">collections</a></li>
-      <li><a href="/collections/grillz" class="header__mobile-link">grillz</a></li>
+      <li><a href="{{ routes.all_products_collection_url }}" class="header__mobile-link">shop</a></li>
+      <li><a href="{{ routes.collections_url }}" class="header__mobile-link">collections</a></li>
       <li><a href="/pages/custom" class="header__mobile-link">custom</a></li>
-      <li><a href="/pages/world" class="header__mobile-link">world</a></li>
-      <li><a href="/pages/appointments" class="header__mobile-link">appointments</a></li>
       <li><a href="/pages/about" class="header__mobile-link">about</a></li>
       <li><a href="{{ routes.cart_url }}" class="header__mobile-link">cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}</a></li>
     </ul>
@@ -96,7 +84,7 @@
       "type": "text",
       "id": "logo_text",
       "label": "Logo text",
-      "default": "BOBBY"
+      "default": "byestelledegeyter"
     }
   ]
 }

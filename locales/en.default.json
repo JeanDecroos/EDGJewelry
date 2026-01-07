@@ -25,6 +25,15 @@
       "checkout": "Checkout",
       "remove": "Remove"
     }
+  },
+  "contact": {
+    "form": {
+      "post_success": "Thank you for your inquiry. We'll get back to you soon.",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message"
+    }
   }
 }
 

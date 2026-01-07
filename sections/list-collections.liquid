@@ -1,0 +1,77 @@
+{%- comment -%}
+  List Collections Section
+  Displays all collections with their products organized by collection
+{%- endcomment -%}
+
+<section class="list-collections" data-section-type="list-collections">
+  <div class="list-collections__inner">
+    <header class="list-collections__header">
+      <h1 class="list-collections__title">collections</h1>
+    </header>
+
+    <div class="list-collections__grid">
+      {%- for collection in collections -%}
+        {%- unless collection.handle == 'all' or collection.handle == 'frontpage' -%}
+          {%- if collection.products_count > 0 -%}
+            <div class="collection-group" data-reveal>
+              <header class="collection-group__header">
+                <h2 class="collection-group__title">
+                  <a href="{{ collection.url }}" class="collection-group__link">
+                    {{ collection.title | downcase }}
+                  </a>
+                </h2>
+                {%- if collection.description != blank -%}
+                  <p class="collection-group__description">{{ collection.description }}</p>
+                {%- endif -%}
+              </header>
+
+              <div class="product-grid product-grid--{{ section.settings.columns_desktop }}">
+                {%- for product in collection.products limit: section.settings.products_per_collection -%}
+                  {% render 'product-card', product: product %}
+                {%- endfor -%}
+              </div>
+
+              {%- if collection.products_count > section.settings.products_per_collection -%}
+                <div class="collection-group__footer">
+                  <a href="{{ collection.url }}" class="collection-group__view-all">
+                    view all {{ collection.products_count }} products
+                  </a>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "List Collections",
+  "class": "section-list-collections",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_collection",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "default": 8,
+      "label": "Products per collection"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    }
+  ]
+}
+{% endschema %}
+

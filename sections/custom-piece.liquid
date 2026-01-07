@@ -1,0 +1,178 @@
+{%- comment -%}
+  Custom Piece Section
+  Page for custom jewelry orders and inquiries
+{%- endcomment -%}
+
+<section class="custom-piece" data-section-type="custom-piece">
+  <div class="custom-piece__inner">
+    <header class="custom-piece__header">
+      <h1 class="custom-piece__title">{{ page.title | default: 'custom piece' | downcase }}</h1>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="custom-piece__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="custom-piece__content">
+      {%- if page.content != blank -%}
+        <div class="custom-piece__description">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+
+      <div class="custom-piece__form-wrapper">
+        {%- form 'contact', id: 'CustomPieceForm', class: 'custom-piece__form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="custom-piece__success">
+              <p>{{ 'contact.form.post_success' | t }}</p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="custom-piece__errors">
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>
+                    {%- if field == 'form' -%}
+                      {{ form.errors[field] }}
+                    {%- else -%}
+                      <a href="#{{ field }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="custom-piece__fields">
+            <div class="custom-piece__field">
+              <label for="ContactFormName" class="custom-piece__label">{{ 'contact.form.name' | t }}</label>
+              <input
+                type="text"
+                id="ContactFormName"
+                name="contact[name]"
+                class="custom-piece__input"
+                required
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              >
+            </div>
+
+            <div class="custom-piece__field">
+              <label for="ContactFormEmail" class="custom-piece__label">{{ 'contact.form.email' | t }}</label>
+              <input
+                type="email"
+                id="ContactFormEmail"
+                name="contact[email]"
+                class="custom-piece__input"
+                required
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              >
+            </div>
+
+            <div class="custom-piece__field">
+              <label for="ContactFormPhone" class="custom-piece__label">{{ 'contact.form.phone' | t }}</label>
+              <input
+                type="tel"
+                id="ContactFormPhone"
+                name="contact[phone]"
+                class="custom-piece__input"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              >
+            </div>
+
+            <div class="custom-piece__field">
+              <label for="ContactFormType" class="custom-piece__label">{{ section.settings.type_label | default: 'Type of piece' }}</label>
+              <select id="ContactFormType" name="contact[type]" class="custom-piece__select">
+                <option value="">{{ section.settings.type_placeholder | default: 'Select type' }}</option>
+                <option value="ring">Ring</option>
+                <option value="necklace">Necklace</option>
+                <option value="earrings">Earrings</option>
+                <option value="bracelet">Bracelet</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="custom-piece__field">
+              <label for="ContactFormBudget" class="custom-piece__label">{{ section.settings.budget_label | default: 'Budget range' }}</label>
+              <select id="ContactFormBudget" name="contact[budget]" class="custom-piece__select">
+                <option value="">{{ section.settings.budget_placeholder | default: 'Select budget range' }}</option>
+                <option value="under-500">Under $500</option>
+                <option value="500-1000">$500 - $1,000</option>
+                <option value="1000-2500">$1,000 - $2,500</option>
+                <option value="2500-5000">$2,500 - $5,000</option>
+                <option value="over-5000">Over $5,000</option>
+              </select>
+            </div>
+
+            <div class="custom-piece__field custom-piece__field--full">
+              <label for="ContactFormMessage" class="custom-piece__label">{{ 'contact.form.message' | t }}</label>
+              <textarea
+                id="ContactFormMessage"
+                name="contact[body]"
+                class="custom-piece__textarea"
+                rows="8"
+                required
+                placeholder="{{ section.settings.message_placeholder | default: 'Tell us about your custom piece idea...' }}"
+              >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="custom-piece__submit">
+            {{ section.settings.submit_label | default: 'submit inquiry' }}
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Piece",
+  "class": "section-custom-piece",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Create a one-of-a-kind piece tailored to your vision"
+    },
+    {
+      "type": "text",
+      "id": "type_label",
+      "label": "Type field label",
+      "default": "Type of piece"
+    },
+    {
+      "type": "text",
+      "id": "type_placeholder",
+      "label": "Type placeholder",
+      "default": "Select type"
+    },
+    {
+      "type": "text",
+      "id": "budget_label",
+      "label": "Budget field label",
+      "default": "Budget range"
+    },
+    {
+      "type": "text",
+      "id": "budget_placeholder",
+      "label": "Budget placeholder",
+      "default": "Select budget range"
+    },
+    {
+      "type": "text",
+      "id": "message_placeholder",
+      "label": "Message placeholder",
+      "default": "Tell us about your custom piece idea..."
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button label",
+      "default": "submit inquiry"
+    }
+  ]
+}
+{% endschema %}
+
