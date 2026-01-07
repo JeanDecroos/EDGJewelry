@@ -59,15 +59,21 @@ EDGJewelry/
 │   ├── featured-collection.liquid
 │   ├── main-collection.liquid
 │   ├── main-product.liquid
-│   └── product-recommendations.liquid
+│   ├── product-recommendations.liquid
+│   ├── list-collections.liquid
+│   ├── main-page.liquid
+│   └── custom-piece.liquid
 ├── snippets/
 │   ├── product-card.liquid
 │   ├── cart-drawer.liquid
 │   └── meta-tags.liquid
 └── templates/
-    ├── index.liquid
-    ├── collection.liquid
-    └── product.liquid
+    ├── index.json
+    ├── collection.json
+    ├── product.json
+    ├── list-collections.json
+    ├── page.json
+    └── page.custom.json
 ```
 
 ## 🎨 Design Features

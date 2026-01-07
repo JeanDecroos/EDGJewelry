@@ -3,9 +3,7 @@
     "name": "theme_info",
     "theme_name": "EDG Jewelry",
     "theme_version": "1.0.0",
-    "theme_author": "EDG",
-    "theme_documentation_url": "https://example.com",
-    "theme_support_url": "https://example.com/support"
+    "theme_author": "EDG"
   },
   {
     "name": "Typography",

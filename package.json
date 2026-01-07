@@ -1,0 +1,27 @@
+{
+  "name": "edg-jewelry-theme",
+  "version": "1.0.0",
+  "description": "Minimalist luxury jewelry Shopify theme",
+  "scripts": {
+    "create-products": "node create-products.js",
+    "get-token": "node get-access-token.js"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "jewelry",
+    "ecommerce"
+  ],
+  "author": "EDG",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JeanDecroos/EDGJewelry.git"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+
