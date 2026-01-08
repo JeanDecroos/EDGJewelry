@@ -28,28 +28,6 @@
         <li class="header__menu-item">
           <a href="/pages/about" class="header__link">about</a>
         </li>
-        {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
-          <li class="header__menu-item header__localization">
-            {%- form 'localization', id: 'HeaderLocalizationForm', class: 'header__localization-form' -%}
-              {%- if localization.available_countries.size > 1 -%}
-                <div class="header__selector">
-                  <button type="button" class="header__link header__selector-button" aria-expanded="false" aria-controls="HeaderCountryList">
-                    {{ localization.country.currency.iso_code }}
-                  </button>
-                  <ul id="HeaderCountryList" class="header__dropdown" hidden>
-                    {%- for country in localization.available_countries -%}
-                      <li class="header__dropdown-item">
-                        <button type="submit" name="country_code" value="{{ country.iso_code }}" class="header__dropdown-link{% if country.iso_code == localization.country.iso_code %} is-active{% endif %}">
-                          {{ country.currency.iso_code }}
-                        </button>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </div>
-              {%- endif -%}
-            {%- endform -%}
-          </li>
-        {%- endif -%}
         <li class="header__menu-item">
           <a href="{{ routes.cart_url }}" class="header__link header__cart" aria-label="Cart" data-cart-toggle>
             cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}

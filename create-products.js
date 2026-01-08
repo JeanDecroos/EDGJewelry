@@ -47,7 +47,7 @@ try {
   // Silently fail if .env can't be loaded
 }
 
-const STORE_URL = process.env.SHOPIFY_STORE_URL || 'byestelledegeyter.myshopify.com';
+const STORE_URL = process.env.SHOPIFY_STORE_URL || 'by-estelledegeyter.myshopify.com';
 const ACCESS_TOKEN = process.argv[2] || process.env.SHOPIFY_ACCESS_TOKEN;
 const CLIENT_ID = process.env.SHOPIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET;

@@ -1,0 +1,6 @@
+# Shopify ignore file
+# Files listed here won't be deleted from remote theme when pushing
+
+# Standard Shopify templates that may exist on remote but not locally
+templates/gift_card.liquid
+

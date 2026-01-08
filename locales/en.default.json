@@ -23,7 +23,13 @@
       "empty": "Your cart is empty",
       "subtotal": "Subtotal",
       "checkout": "Checkout",
-      "remove": "Remove"
+      "remove": "Remove",
+      "continue_shopping": "Continue shopping",
+      "update": "Update cart",
+      "decrease_quantity": "Decrease quantity",
+      "increase_quantity": "Increase quantity",
+      "shipping_note": "Shipping calculated at checkout",
+      "no_image": "No image"
     }
   },
   "contact": {

@@ -1,0 +1,151 @@
+{%- comment -%}
+  About Page Section
+  Custom section for the about page with flexible content blocks
+{%- endcomment -%}
+
+<section class="about-page" data-section-type="about-page">
+  <div class="about-page__inner">
+    <header class="about-page__header">
+      <h1 class="about-page__title">{{ page.title | default: 'about' | downcase }}</h1>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="about-page__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="about-page__content">
+      {%- if page.content != blank -%}
+        <div class="about-page__description">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_story and section.settings.story_title != blank -%}
+        <div class="about-page__block">
+          <h2 class="about-page__block-title">{{ section.settings.story_title | downcase }}</h2>
+          {%- if section.settings.story_content != blank -%}
+            <div class="about-page__block-content">
+              {{ section.settings.story_content }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_values and section.settings.values_title != blank -%}
+        <div class="about-page__block">
+          <h2 class="about-page__block-title">{{ section.settings.values_title | downcase }}</h2>
+          {%- if section.settings.values_content != blank -%}
+            <div class="about-page__block-content">
+              {{ section.settings.values_content }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_contact and section.settings.contact_title != blank -%}
+        <div class="about-page__block">
+          <h2 class="about-page__block-title">{{ section.settings.contact_title | downcase }}</h2>
+          {%- if section.settings.contact_content != blank -%}
+            <div class="about-page__block-content">
+              {{ section.settings.contact_content }}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.contact_email != blank -%}
+            <div class="about-page__contact-info">
+              <a href="mailto:{{ section.settings.contact_email }}" class="about-page__contact-link">
+                {{ section.settings.contact_email }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Page",
+  "class": "section-about-page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover our story and passion for creating beautiful jewelry"
+    },
+    {
+      "type": "header",
+      "content": "Story Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_story",
+      "label": "Show story section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Story title",
+      "default": "our story"
+    },
+    {
+      "type": "richtext",
+      "id": "story_content",
+      "label": "Story content",
+      "default": "<p>We are passionate about creating unique, handcrafted jewelry pieces that reflect your individual style and personality.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Values Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_values",
+      "label": "Show values section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "values_title",
+      "label": "Values title",
+      "default": "our values"
+    },
+    {
+      "type": "richtext",
+      "id": "values_content",
+      "label": "Values content",
+      "default": "<p>Quality, craftsmanship, and attention to detail are at the heart of everything we create.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Contact Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact",
+      "label": "Show contact section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact title",
+      "default": "get in touch"
+    },
+    {
+      "type": "richtext",
+      "id": "contact_content",
+      "label": "Contact content",
+      "default": "<p>Have questions or want to discuss a custom piece? We'd love to hear from you.</p>"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact email",
+      "default": "hello@byestelledegeyter.com"
+    }
+  ]
+}
+{% endschema %}
+

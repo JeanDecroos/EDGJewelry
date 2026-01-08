@@ -1,0 +1,120 @@
+{%- comment -%}
+  Main Cart Section
+  Full cart page with AJAX updates on desktop
+{%- endcomment -%}
+
+<section class="main-cart" data-section-type="main-cart" data-cart-section>
+  <div class="main-cart__inner">
+    <header class="main-cart__header">
+      <h1 class="main-cart__title">{{ 'cart.general.title' | t | downcase }}</h1>
+    </header>
+
+    <div class="main-cart__content" data-cart-content>
+      {%- if cart.item_count > 0 -%}
+        <form action="{{ routes.cart_url }}" method="post" id="CartForm" class="main-cart__form" data-cart-form>
+          <div class="main-cart__items">
+            {%- for item in cart.items -%}
+              <div class="main-cart__item" data-cart-item data-item-key="{{ item.key }}">
+                <a href="{{ item.url }}" class="main-cart__item-image">
+                  {%- if item.image -%}
+                    <img
+                      src="{{ item.image | image_url: width: 300 }}"
+                      alt="{{ item.image.alt | escape | default: item.title }}"
+                      loading="lazy"
+                      width="120"
+                      height="120"
+                    >
+                  {%- else -%}
+                    <div class="main-cart__item-placeholder">
+                      {{ 'cart.general.no_image' | t | default: 'No image' }}
+                    </div>
+                  {%- endif -%}
+                </a>
+
+                <div class="main-cart__item-info">
+                  <a href="{{ item.url }}" class="main-cart__item-title">{{ item.product.title | downcase }}</a>
+                  {%- unless item.product.has_only_default_variant -%}
+                    <p class="main-cart__item-variant">{{ item.variant.title | downcase }}</p>
+                  {%- endunless -%}
+                  <p class="main-cart__item-price" data-item-price>{{ item.final_line_price | money }}</p>
+                </div>
+
+                <div class="main-cart__item-quantity">
+                  <button 
+                    type="button" 
+                    class="main-cart__quantity-btn" 
+                    data-quantity-decrease
+                    aria-label="{{ 'cart.general.decrease_quantity' | t | default: 'Decrease quantity' }}"
+                  >−</button>
+                  <input
+                    type="number"
+                    class="main-cart__quantity-input"
+                    name="updates[]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    data-quantity-input
+                    aria-label="{{ 'products.product.quantity' | t }}"
+                  >
+                  <button 
+                    type="button" 
+                    class="main-cart__quantity-btn" 
+                    data-quantity-increase
+                    aria-label="{{ 'cart.general.increase_quantity' | t | default: 'Increase quantity' }}"
+                  >+</button>
+                </div>
+
+                <button 
+                  type="button" 
+                  class="main-cart__item-remove" 
+                  data-remove-item
+                  data-item-key="{{ item.key }}"
+                  aria-label="{{ 'cart.general.remove' | t }}"
+                >
+                  {{ 'cart.general.remove' | t | downcase }}
+                </button>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <div class="main-cart__footer">
+            <div class="main-cart__summary">
+              <div class="main-cart__subtotal">
+                <span>{{ 'cart.general.subtotal' | t | downcase }}</span>
+                <span data-cart-total>{{ cart.total_price | money }}</span>
+              </div>
+              <p class="main-cart__note">{{ 'cart.general.shipping_note' | t | default: 'Shipping calculated at checkout' }}</p>
+            </div>
+
+            <div class="main-cart__actions">
+              <a href="{{ routes.all_products_collection_url }}" class="main-cart__continue">
+                {{ 'cart.general.continue_shopping' | t | default: 'Continue shopping' | downcase }}
+              </a>
+              <button type="submit" name="update" class="main-cart__update" data-cart-update>
+                {{ 'cart.general.update' | t | default: 'Update cart' | downcase }}
+              </button>
+              <button type="submit" name="checkout" class="main-cart__checkout">
+                {{ 'cart.general.checkout' | t | downcase }}
+              </button>
+            </div>
+          </div>
+        </form>
+      {%- else -%}
+        <div class="main-cart__empty">
+          <p class="main-cart__empty-text">{{ 'cart.general.empty' | t | downcase }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="main-cart__empty-link">
+            {{ 'cart.general.continue_shopping' | t | default: 'Continue shopping' | downcase }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Cart",
+  "class": "section-main-cart",
+  "settings": []
+}
+{% endschema %}
+

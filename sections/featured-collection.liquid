@@ -1,11 +1,12 @@
 {%- comment -%}
   Featured Collection Section
-  Grid of products from a selected collection
+  Carousel of products from a selected collection
 {%- endcomment -%}
 
 {%- liquid
   assign collection = collections[section.settings.collection]
   assign products_to_show = section.settings.products_to_show | default: 8
+  assign columns_desktop = section.settings.columns_desktop | default: 4 | plus: 0
 -%}
 
 <section class="featured-collection" data-section-type="featured-collection">
@@ -19,23 +20,47 @@
       </header>
     {%- endif -%}
 
-    <div class="product-grid product-grid--{{ section.settings.columns_desktop }}">
+    <div class="featured-collection__carousel-wrapper">
+      <div class="featured-collection__carousel" data-carousel{% if section.settings.enable_auto_scroll %} data-auto-scroll="true" data-auto-scroll-interval="{{ section.settings.auto_scroll_interval | default: 5000 }}"{% endif %}>
+        <div class="featured-collection__track" data-carousel-track>
+          {%- if collection != blank -%}
+            {%- for product in collection.products limit: products_to_show -%}
+              <div class="featured-collection__slide" data-reveal>
+                {% render 'product-card', product: product %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..products_to_show) -%}
+              <div class="featured-collection__slide product-card--placeholder" data-reveal>
+                <div class="product-card">
+                  <div class="product-card__media">
+                    {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                  </div>
+                  <div class="product-card__info">
+                    <h3 class="product-card__title">example product</h3>
+                    <p class="product-card__price">{{ shop.currency | prepend: '0.00 ' }}</p>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+      
       {%- if collection != blank -%}
-        {%- for product in collection.products limit: products_to_show -%}
-          {% render 'product-card', product: product %}
-        {%- endfor -%}
-      {%- else -%}
-        {%- for i in (1..products_to_show) -%}
-          <div class="product-card product-card--placeholder" data-reveal>
-            <div class="product-card__media">
-              {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
-            </div>
-            <div class="product-card__info">
-              <h3 class="product-card__title">example product</h3>
-              <p class="product-card__price">{{ shop.currency | prepend: '0.00 ' }}</p>
-            </div>
-          </div>
-        {%- endfor -%}
+        {%- assign columns_num = columns_desktop | plus: 0 -%}
+        {%- if collection.products.size > columns_num -%}
+        <button class="featured-collection__nav featured-collection__nav--prev" data-carousel-prev aria-label="Previous products">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <button class="featured-collection__nav featured-collection__nav--next" data-carousel-next aria-label="Next products">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+        {%- endif -%}
       {%- endif -%}
     </div>
   </div>
@@ -82,6 +107,23 @@
       "id": "show_view_all",
       "label": "Show 'View all' link",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_auto_scroll",
+      "label": "Enable auto-scroll",
+      "default": false,
+      "info": "Automatically scroll through products"
+    },
+    {
+      "type": "range",
+      "id": "auto_scroll_interval",
+      "min": 3000,
+      "max": 9500,
+      "step": 500,
+      "default": 5000,
+      "label": "Auto-scroll interval (ms)",
+      "info": "Time between auto-scrolls in milliseconds"
     }
   ],
   "presets": [

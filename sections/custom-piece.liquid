@@ -20,7 +20,7 @@
       {%- endif -%}
 
       <div class="custom-piece__form-wrapper">
-        {%- form 'contact', id: 'CustomPieceForm', class: 'custom-piece__form' -%}
+        {%- form 'contact', id: 'CustomPieceForm', class: 'custom-piece__form', enctype: 'multipart/form-data' -%}
           {%- if form.posted_successfully? -%}
             <div class="custom-piece__success">
               <p>{{ 'contact.form.post_success' | t }}</p>
@@ -70,13 +70,294 @@
 
             <div class="custom-piece__field">
               <label for="ContactFormPhone" class="custom-piece__label">{{ 'contact.form.phone' | t }}</label>
-              <input
-                type="tel"
-                id="ContactFormPhone"
-                name="contact[phone]"
-                class="custom-piece__input"
-                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-              >
+              <div class="custom-piece__phone" data-phone-group>
+                <div class="custom-piece__phone-row">
+                  <select
+                    id="ContactFormPhoneCountry"
+                    class="custom-piece__select custom-piece__select--phone-code custom-piece__select--visually-hidden"
+                    aria-label="Country code"
+                    data-phone-country
+                  >
+                    {%- assign default_country = localization.country.iso_code | upcase -%}
+                    <option value="BE:+32" data-country="BE" data-code="+32" {% if default_country == 'BE' %}selected{% endif %}>Belgium (+32)</option>
+                    <option value="NL:+31" data-country="NL" data-code="+31" {% if default_country == 'NL' %}selected{% endif %}>Netherlands (+31)</option>
+                    <option value="FR:+33" data-country="FR" data-code="+33" {% if default_country == 'FR' %}selected{% endif %}>France (+33)</option>
+                    <option value="DE:+49" data-country="DE" data-code="+49" {% if default_country == 'DE' %}selected{% endif %}>Germany (+49)</option>
+                    <option value="GB:+44" data-country="GB" data-code="+44" {% if default_country == 'GB' %}selected{% endif %}>United Kingdom (+44)</option>
+                    <option value="IE:+353" data-country="IE" data-code="+353" {% if default_country == 'IE' %}selected{% endif %}>Ireland (+353)</option>
+                    <option value="ES:+34" data-country="ES" data-code="+34" {% if default_country == 'ES' %}selected{% endif %}>Spain (+34)</option>
+                    <option value="IT:+39" data-country="IT" data-code="+39" {% if default_country == 'IT' %}selected{% endif %}>Italy (+39)</option>
+                    <option value="PT:+351" data-country="PT" data-code="+351" {% if default_country == 'PT' %}selected{% endif %}>Portugal (+351)</option>
+                    <option value="LU:+352" data-country="LU" data-code="+352" {% if default_country == 'LU' %}selected{% endif %}>Luxembourg (+352)</option>
+                    <option value="CH:+41" data-country="CH" data-code="+41" {% if default_country == 'CH' %}selected{% endif %}>Switzerland (+41)</option>
+                    <option value="AT:+43" data-country="AT" data-code="+43" {% if default_country == 'AT' %}selected{% endif %}>Austria (+43)</option>
+                    <option value="DK:+45" data-country="DK" data-code="+45" {% if default_country == 'DK' %}selected{% endif %}>Denmark (+45)</option>
+                    <option value="SE:+46" data-country="SE" data-code="+46" {% if default_country == 'SE' %}selected{% endif %}>Sweden (+46)</option>
+                    <option value="NO:+47" data-country="NO" data-code="+47" {% if default_country == 'NO' %}selected{% endif %}>Norway (+47)</option>
+                    <option value="FI:+358" data-country="FI" data-code="+358" {% if default_country == 'FI' %}selected{% endif %}>Finland (+358)</option>
+                    <option value="PL:+48" data-country="PL" data-code="+48" {% if default_country == 'PL' %}selected{% endif %}>Poland (+48)</option>
+                    <option value="CZ:+420" data-country="CZ" data-code="+420" {% if default_country == 'CZ' %}selected{% endif %}>Czechia (+420)</option>
+                    <option value="SK:+421" data-country="SK" data-code="+421" {% if default_country == 'SK' %}selected{% endif %}>Slovakia (+421)</option>
+                    <option value="HU:+36" data-country="HU" data-code="+36" {% if default_country == 'HU' %}selected{% endif %}>Hungary (+36)</option>
+                    <option value="RO:+40" data-country="RO" data-code="+40" {% if default_country == 'RO' %}selected{% endif %}>Romania (+40)</option>
+                    <option value="BG:+359" data-country="BG" data-code="+359" {% if default_country == 'BG' %}selected{% endif %}>Bulgaria (+359)</option>
+                    <option value="GR:+30" data-country="GR" data-code="+30" {% if default_country == 'GR' %}selected{% endif %}>Greece (+30)</option>
+                    <option value="US:+1" data-country="US" data-code="+1" {% if default_country == 'US' %}selected{% endif %}>United States (+1)</option>
+                    <option value="CA:+1" data-country="CA" data-code="+1" {% if default_country == 'CA' %}selected{% endif %}>Canada (+1)</option>
+                    <option value="AU:+61" data-country="AU" data-code="+61" {% if default_country == 'AU' %}selected{% endif %}>Australia (+61)</option>
+                    <option value="NZ:+64" data-country="NZ" data-code="+64" {% if default_country == 'NZ' %}selected{% endif %}>New Zealand (+64)</option>
+                    <option value="AE:+971" data-country="AE" data-code="+971" {% if default_country == 'AE' %}selected{% endif %}>United Arab Emirates (+971)</option>
+                  </select>
+
+                  <div class="custom-piece__phone-code" data-phone-code>
+                    <button
+                      type="button"
+                      class="custom-piece__phone-code-button"
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                      aria-controls="PhoneCodeList"
+                      data-phone-code-button
+                    >
+                      <span class="custom-piece__phone-flag" data-phone-flag aria-hidden="true"></span>
+                      <span class="custom-piece__phone-code-text" data-phone-code-text>Belgium +32</span>
+                    </button>
+
+                    <div class="custom-piece__phone-code-dropdown" data-phone-code-dropdown hidden>
+                      <div class="custom-piece__phone-code-search-wrap">
+                        <input
+                          type="text"
+                          class="custom-piece__phone-code-search"
+                          placeholder="Search country"
+                          aria-label="Search country"
+                          autocomplete="off"
+                          data-phone-code-search
+                        >
+                      </div>
+                      <ul id="PhoneCodeList" class="custom-piece__phone-code-list" role="listbox">
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="BE" data-code="+32" data-label="Belgium +32">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--be" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Belgium</span>
+                            <span class="custom-piece__phone-code-option-code">+32</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="NL" data-code="+31" data-label="Netherlands +31">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--nl" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Netherlands</span>
+                            <span class="custom-piece__phone-code-option-code">+31</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="FR" data-code="+33" data-label="France +33">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--fr" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">France</span>
+                            <span class="custom-piece__phone-code-option-code">+33</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="DE" data-code="+49" data-label="Germany +49">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--de" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Germany</span>
+                            <span class="custom-piece__phone-code-option-code">+49</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="GB" data-code="+44" data-label="United Kingdom +44">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--gb" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">United Kingdom</span>
+                            <span class="custom-piece__phone-code-option-code">+44</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="IE" data-code="+353" data-label="Ireland +353">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--ie" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Ireland</span>
+                            <span class="custom-piece__phone-code-option-code">+353</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="ES" data-code="+34" data-label="Spain +34">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--es" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Spain</span>
+                            <span class="custom-piece__phone-code-option-code">+34</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="IT" data-code="+39" data-label="Italy +39">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--it" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Italy</span>
+                            <span class="custom-piece__phone-code-option-code">+39</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="PT" data-code="+351" data-label="Portugal +351">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--pt" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Portugal</span>
+                            <span class="custom-piece__phone-code-option-code">+351</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="LU" data-code="+352" data-label="Luxembourg +352">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--lu" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Luxembourg</span>
+                            <span class="custom-piece__phone-code-option-code">+352</span>
+                          </button>
+                        </li>
+
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="CH" data-code="+41" data-label="Switzerland +41">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--ch" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Switzerland</span>
+                            <span class="custom-piece__phone-code-option-code">+41</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="AT" data-code="+43" data-label="Austria +43">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--at" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Austria</span>
+                            <span class="custom-piece__phone-code-option-code">+43</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="DK" data-code="+45" data-label="Denmark +45">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--dk" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Denmark</span>
+                            <span class="custom-piece__phone-code-option-code">+45</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="SE" data-code="+46" data-label="Sweden +46">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--se" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Sweden</span>
+                            <span class="custom-piece__phone-code-option-code">+46</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="NO" data-code="+47" data-label="Norway +47">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--no" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Norway</span>
+                            <span class="custom-piece__phone-code-option-code">+47</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="FI" data-code="+358" data-label="Finland +358">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--fi" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Finland</span>
+                            <span class="custom-piece__phone-code-option-code">+358</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="PL" data-code="+48" data-label="Poland +48">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--pl" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Poland</span>
+                            <span class="custom-piece__phone-code-option-code">+48</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="CZ" data-code="+420" data-label="Czechia +420">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--cz" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Czechia</span>
+                            <span class="custom-piece__phone-code-option-code">+420</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="SK" data-code="+421" data-label="Slovakia +421">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--sk" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Slovakia</span>
+                            <span class="custom-piece__phone-code-option-code">+421</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="HU" data-code="+36" data-label="Hungary +36">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--hu" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Hungary</span>
+                            <span class="custom-piece__phone-code-option-code">+36</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="RO" data-code="+40" data-label="Romania +40">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--ro" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Romania</span>
+                            <span class="custom-piece__phone-code-option-code">+40</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="BG" data-code="+359" data-label="Bulgaria +359">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--bg" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Bulgaria</span>
+                            <span class="custom-piece__phone-code-option-code">+359</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="GR" data-code="+30" data-label="Greece +30">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--gr" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Greece</span>
+                            <span class="custom-piece__phone-code-option-code">+30</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="US" data-code="+1" data-label="United States +1">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--us" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">United States</span>
+                            <span class="custom-piece__phone-code-option-code">+1</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="CA" data-code="+1" data-label="Canada +1">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--ca" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Canada</span>
+                            <span class="custom-piece__phone-code-option-code">+1</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="AU" data-code="+61" data-label="Australia +61">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--au" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">Australia</span>
+                            <span class="custom-piece__phone-code-option-code">+61</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="NZ" data-code="+64" data-label="New Zealand +64">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--nz" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">New Zealand</span>
+                            <span class="custom-piece__phone-code-option-code">+64</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button type="button" class="custom-piece__phone-code-option" role="option" data-phone-code-option data-country="AE" data-code="+971" data-label="United Arab Emirates +971">
+                            <span class="custom-piece__phone-flag custom-piece__phone-flag--ae" aria-hidden="true"></span>
+                            <span class="custom-piece__phone-code-option-name">United Arab Emirates</span>
+                            <span class="custom-piece__phone-code-option-code">+971</span>
+                          </button>
+                        </li>
+                      </ul>
+                      <p class="custom-piece__phone-code-no-results" data-phone-code-no-results hidden>No results</p>
+                    </div>
+                  </div>
+
+                  <input
+                    type="tel"
+                    id="ContactFormPhoneNational"
+                    class="custom-piece__input custom-piece__input--phone"
+                    inputmode="tel"
+                    autocomplete="tel-national"
+                    placeholder="{% if default_country == 'BE' %}470 12 34 56{% elsif default_country == 'NL' %}6 12345678{% else %}Phone number{% endif %}"
+                    pattern="^[0-9\\s().-]{6,20}$"
+                    title="Please enter your phone number"
+                    data-phone-national
+                    value=""
+                  >
+                </div>
+
+                <input
+                  type="hidden"
+                  id="ContactFormPhone"
+                  name="contact[phone]"
+                  data-phone-e164
+                  value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                >
+              </div>
             </div>
 
             <div class="custom-piece__field">
@@ -95,11 +376,11 @@
               <label for="ContactFormBudget" class="custom-piece__label">{{ section.settings.budget_label | default: 'Budget range' }}</label>
               <select id="ContactFormBudget" name="contact[budget]" class="custom-piece__select">
                 <option value="">{{ section.settings.budget_placeholder | default: 'Select budget range' }}</option>
-                <option value="under-500">Under $500</option>
-                <option value="500-1000">$500 - $1,000</option>
-                <option value="1000-2500">$1,000 - $2,500</option>
-                <option value="2500-5000">$2,500 - $5,000</option>
-                <option value="over-5000">Over $5,000</option>
+                <option value="under-500">Under €500</option>
+                <option value="500-1000">€500 - €1.000</option>
+                <option value="1000-2500">€1.000 - €2.500</option>
+                <option value="2500-5000">€2.500 - €5.000</option>
+                <option value="over-5000">Over €5.000</option>
               </select>
             </div>
 
@@ -113,6 +394,20 @@
                 required
                 placeholder="{{ section.settings.message_placeholder | default: 'Tell us about your custom piece idea...' }}"
               >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            </div>
+
+            <div class="custom-piece__field custom-piece__field--full">
+              <label for="ContactFormAttachment" class="custom-piece__label">{{ section.settings.attachment_label | default: 'Attach ideas or inspiration (optional)' }}</label>
+              <input
+                type="file"
+                id="ContactFormAttachment"
+                name="contact[attachment]"
+                class="custom-piece__file-input"
+                accept="image/*,.pdf,.doc,.docx"
+                multiple
+              >
+              <div class="custom-piece__file-preview" id="FilePreview"></div>
+              <p class="custom-piece__file-hint">{{ section.settings.attachment_hint | default: 'You can upload images, PDFs, or documents (max 10MB per file)' }}</p>
             </div>
           </div>
 
@@ -171,6 +466,18 @@
       "id": "submit_label",
       "label": "Submit button label",
       "default": "submit inquiry"
+    },
+    {
+      "type": "text",
+      "id": "attachment_label",
+      "label": "Attachment field label",
+      "default": "Attach ideas or inspiration (optional)"
+    },
+    {
+      "type": "text",
+      "id": "attachment_hint",
+      "label": "Attachment hint text",
+      "default": "You can upload images, PDFs, or documents (max 10MB per file)"
     }
   ]
 }
